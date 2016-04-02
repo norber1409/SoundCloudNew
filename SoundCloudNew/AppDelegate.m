@@ -36,7 +36,7 @@
     //Set up CoreData
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseName];
     
-    [self setUpForFirstTimeUse];
+    [self loadGenreIfNecessary];
     
     [self.window setTintColor: kAppColor];
     //set color Tab bar
@@ -79,13 +79,14 @@
     [MagicalRecord cleanUp];
 }
 
-- (void)setUpForFirstTimeUse;
+- (void)loadGenreIfNecessary;
 {
     
+    
+    
     //Get data
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    if ([Genre MR_countOfEntities] == 0)
     {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
         
         //Set Appcolor
         NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:kAppDefaultColor];
