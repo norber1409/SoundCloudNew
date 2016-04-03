@@ -61,11 +61,6 @@ typedef NS_ENUM(NSInteger, buttonType) {
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [self viewWillAppear:animated];
-    
-}
-
 - (void)btnRemoveAllDidTouch;{
     
     [PlaylistTrack deleteAllPlaylistTracksInPlaylist:_selectedPlaylist];
