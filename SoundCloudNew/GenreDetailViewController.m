@@ -75,6 +75,13 @@
     }
 }
 
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tbvTracks reloadData];
+}
+
 - (void)loadTracks;
 {
     __weak GenreDetailViewController *weakSelf = self;

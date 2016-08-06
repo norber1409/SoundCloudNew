@@ -109,22 +109,22 @@
 }
 
 #pragma mark - Explore Genres
-- (void)exploreGenresWithCompletionBlock:(void(^)(NSArray *genreDict))completion;
-{
-    NSString *exploreGenreURL = [NSString stringWithFormat:kSoundCloudExploreURL,@"categories"];
-    
-    NSURLSessionDataTask *dataTask = [_httpSessionManager GET:exploreGenreURL
-                                                   parameters:_exploreGenreParameters progress:nil
-                                                      success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                                                          if(completion && responseObject){
-                                                              completion(responseObject[@"music"]);
-                                                          }
-                                                      }
-                                                      failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                                                          NSLog(@"Can't explore genres with error: %@", error);
-                                                      }];
-    [dataTask resume];
-}
+//- (void)exploreGenresWithCompletionBlock:(void(^)(NSArray *genreDict))completion;
+//{
+//    NSString *exploreGenreURL = [NSString stringWithFormat:kSoundCloudExploreURL,@"categories"];
+//    
+//    NSURLSessionDataTask *dataTask = [_httpSessionManager GET:exploreGenreURL
+//                                                   parameters:_exploreGenreParameters progress:nil
+//                                                      success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                                                          if(completion && responseObject){
+//                                                              completion(responseObject[@"music"]);
+//                                                          }
+//                                                      }
+//                                                      failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                                                          NSLog(@"Can't explore genres with error: %@", error);
+//                                                      }];
+//    [dataTask resume];
+//}
 
 - (void)exploreTracksWithGenreCode:(NSString *)genreCode offset:(int)offset completionBlock:(void(^)(NSArray *tracks))completion;
 {
@@ -136,7 +136,14 @@
                                                    parameters:_exploreTrackParameters progress:nil
                                                       success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                                           if (completion && responseObject) {
-                                                              completion(responseObject[@"tracks"]);
+                                                              
+                                                              NSMutableArray *tracksArray = [[NSMutableArray alloc]init];
+                                                              
+                                                              for (NSDictionary *jsonDict in responseObject[@"collection"]) {
+                                                                  [tracksArray addObject:jsonDict[@"track"]];
+                                                              }
+                                                              
+                                                              completion([NSArray arrayWithArray:tracksArray]);
                                                           }
                                                       } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                                           NSLog(@"Can't explore tracks with error: %@", error);

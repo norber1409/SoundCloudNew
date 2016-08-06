@@ -15,6 +15,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NSNumber+SoundCloud.h"
 #import "TrackListViewController.h"
+#import <MarqueeLabel/MarqueeLabel.h>
 
 #define kTracksKey              @"tracks"
 #define kStatusKey              @"status"
@@ -25,7 +26,8 @@
 #define kLoadedTimeRanges       @"currentItem.loadedTimeRanges"
 #define kPlaybackBufferEmpty    @"playbackBufferEmpty"
 #define kPlaybackKeepUp         @"playbackLikelyToKeepUp"
-#import <MarqueeLabel/MarqueeLabel.h>
+
+#define kSoundCloudStreamingURL         @"https://api.soundcloud.com/tracks/%@/stream?client_id=%@"
 
 @interface NowPlayingViewController (){
     id timeObserver;
@@ -187,6 +189,24 @@
     
 }
 
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [_imvArtWork setTintColor:kAppColor];
+    
+    _lblUserName.textColor = kAppColor;
+
+    _lblTitle.textColor = kAppColor;
+    
+    _btnListView.tintColor = kAppColor;
+    
+    _btnShuffle.tintColor = kAppColor;
+    
+    _btnRepeat.tintColor = kAppColor;
+    
+}
+
 - (void)updateGUI;
 {
     if (_currentPlayingItem) {
@@ -269,10 +289,9 @@
     _lblUserName.textColor = kAppColor;
     _lblTitle.text = playingTrack.title;
     _lblTitle.textColor = kAppColor;
-    _lblRemainingTime.text = [NSString stringWithFormat:@"-%@",[playingTrack.duration timeValue]];
     _sliderProgress.value = 0;
     
-    NSString *stringUrl = [NSString stringWithFormat:@"%@?client_id=%@",playingTrack.streamURL,kSoundCloudAppID];
+    NSString *stringUrl = [NSString stringWithFormat:kSoundCloudStreamingURL,playingTrack.trackID,kSoundCloudAppID];
     
     Playlist *historyPlaylist = [Playlist MR_findFirstByAttribute:@"index" withValue:kHistoryPlaylistIndex];
     DBTrack *dbTrack = [DBTrack createDBTrackWithTrack:playingTrack];
@@ -561,7 +580,7 @@
         [self playTrack:_playingTrack];
     } else {
         if ([[_trackList lastObject] isEqual:_playingTrack]) {
-            [self playTrack:_trackList[0]];
+            [self playTrack:[_trackList firstObject]];
         } else {
             _playingTrack = _trackList[[_trackList indexOfObject:_playingTrack] + 1];
             [self playTrack:_playingTrack];
@@ -578,7 +597,7 @@
         [self playTrack:_playingTrack];
     } else {
         if ([[_trackList firstObject] isEqual:_playingTrack]) {
-            [self playTrack:_trackList[_trackList.count]];
+            [self playTrack:[_trackList lastObject]];
         } else {
             _playingTrack = _trackList[[_trackList indexOfObject:_playingTrack] - 1];
             [self playTrack:_playingTrack];

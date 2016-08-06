@@ -53,6 +53,7 @@
 		89A6C8741C592E5400577EA4 /* DBTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 89A6C8711C592E5400577EA4 /* DBTrack.m */; };
 		89A6C8751C592E5400577EA4 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 89A6C8731C592E5400577EA4 /* Track.m */; };
 		89A6C8801C5962D000577EA4 /* PlaylistTrack+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 89A6C87D1C5962D000577EA4 /* PlaylistTrack+CoreDataProperties.m */; };
+		F5CFECAF1D55B4770059E841 /* Genres.json in Resources */ = {isa = PBXBuildFile; fileRef = F5CFECAE1D55B4770059E841 /* Genres.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,6 +140,7 @@
 		89A6C87D1C5962D000577EA4 /* PlaylistTrack+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PlaylistTrack+CoreDataProperties.m"; path = "Model/PlaylistTrack+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B67239B505FC608088DAEA41 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E4A51D5CB77B10B363C0B225 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5CFECAE1D55B4770059E841 /* Genres.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Genres.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +372,7 @@
 			isa = PBXGroup;
 			children = (
 				89540EE61C54C69A008790E5 /* main.m */,
+				F5CFECAE1D55B4770059E841 /* Genres.json */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				89247EC31C5C046600C42288 /* MoreCell.xib in Resources */,
 				8980092D1C571E74009C6973 /* TrackCell.xib in Resources */,
 				898BFABC1C59C928003CAB91 /* Assets.xcassets in Resources */,
+				F5CFECAF1D55B4770059E841 /* Genres.json in Resources */,
 				89540EF01C54C69A008790E5 /* Main.storyboard in Resources */,
 				897BE8331C5617930024403D /* SearchTrackCell.xib in Resources */,
 			);

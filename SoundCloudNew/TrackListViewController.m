@@ -35,6 +35,14 @@
     
 }
 
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tbvTracks reloadData];
+    
+}
+
 - (void)btnDoneAllDidTouch;
 {
     CATransition* transition = [CATransition animation];

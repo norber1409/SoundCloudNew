@@ -44,11 +44,11 @@
                                                    delegate:self];
     
     _genres = [[NSMutableArray alloc]initWithArray:_fetchedResultsController.fetchedObjects];
-    [_tblGenres addInfiniteScrollingWithActionHandler:^{
-        if (_genres.count != 0) {
-            _tblGenres.infiniteScrollingView.hidden = YES;
-        }
-    }];
+//    [_tblGenres addInfiniteScrollingWithActionHandler:^{
+//        if (_genres.count != 0) {
+//            _tblGenres.infiniteScrollingView.hidden = YES;
+//        }
+//    }];
     
     [self loadTracksInGenresIfItsNotFirstTimeLaunch];
     
@@ -66,6 +66,13 @@
     } else {
         self.navigationItem.rightBarButtonItem = nil;
     }
+}
+
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tblGenres reloadData];
 }
 
 - (void)btnPlayingDidTouch;
@@ -116,15 +123,9 @@
 
 - (void)loadTracksInGenresIfItsNotFirstTimeLaunch;
 {
-    if (_genres.count > 0) {
+    for (Genre *genre in _genres) {
         
-        for (Genre *genre in _genres) {
-
-            [self loadTracksWithGenre:genre];
-        }
-        
-    } else {
-        [_tblGenres triggerInfiniteScrolling];
+        [self loadTracksWithGenre:genre];
     }
 }
 //#pragma mark - DZEmptyDataSet DataSource
@@ -189,8 +190,6 @@
     switch(type) {
             
         case NSFetchedResultsChangeInsert: {
-            
-            [self loadTracksWithGenre:anObject];
             
             NSUInteger realIndex = [_fetchedResultsController.fetchedObjects indexOfObject:anObject];
         

@@ -29,6 +29,19 @@
     return genre;
 }
 
++ (instancetype)creatWithJsonDict:(NSDictionary *)jsonDict;
+{
+    Genre *genre = [Genre MR_createEntity];
+    
+    genre.code = jsonDict[@"id"];
+    
+    genre.name = jsonDict[@"name"];
+    genre.artworkURL = @"";
+    genre.index = [NSNumber numberWithInt:[Genre getNewNextIndex]];
+    
+    return genre;
+}
+
 + (int)getNewNextIndex;
 {
     Genre *genre = [Genre MR_findFirstOrderedByAttribute:@"index" ascending:NO];

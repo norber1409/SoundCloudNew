@@ -37,7 +37,7 @@
 
 #define kSoundCloudAppID                            @"a453dc1eaf606c2c7c95e263e0c4f385"
 
-#define kSoundCloudExploreURL                       @"https://api-v2.soundcloud.com/explore/%@"
+#define kSoundCloudExploreURL                       @"https://api-v2.soundcloud.com/charts?kind=trending&genre=%@"
 
 #define kSoundCloudAutocompleteURL                  @"https://api.soundcloud.com/search/suggest"
 

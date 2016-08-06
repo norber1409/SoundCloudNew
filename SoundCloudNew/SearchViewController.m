@@ -74,6 +74,14 @@
     
 }
 
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tblSearchResult reloadData];
+    [self.tblSuggestResult reloadData];
+}
+
 - (void)refresh:(UIRefreshControl *)refreshControl {
     _searchOffset = 0;
     [_searchResult removeAllObjects];

@@ -55,6 +55,13 @@
     
 }
 
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tblPlaylists reloadData];
+}
+
 - (void)btnDoneAllDidTouch;
 {
     

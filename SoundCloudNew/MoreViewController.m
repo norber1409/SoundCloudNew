@@ -175,23 +175,18 @@
     _lblHeader.textColor = kAppColor;
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.window.tintColor = kAppColor;
-    [[UITabBar appearance] setTintColor:kAppColor];
-    [[UITabBar appearance] setBarTintColor:kAppColor];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ColorDidChange" object:nil];
     
-    
-    //Show Alert View
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:@"Color changed! Restart to see the change."
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [alert dismissViewControllerAnimated:YES completion:nil];
-    }];
-    
-    [alert addAction:ok];
-    
-    [self presentViewController:alert animated:YES completion:nil];
+    if ([NowPlayingViewController sharedManager].playingTrack) {
+        
+        UIImage *btnPlayingImage = [UIImage customWithTintColor:kAppColor duration:1.5];
+        
+        UIBarButtonItem *barItem = [[UIBarButtonItem alloc]initWithImage:btnPlayingImage style:UIBarButtonItemStyleBordered target:self action:@selector(btnPlayingDidTouch)];
+        self.navigationItem.rightBarButtonItem = barItem;
+    } else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
     
 }
 

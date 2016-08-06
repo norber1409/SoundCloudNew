@@ -39,8 +39,6 @@
     [self loadGenreIfNecessary];
     
     [self.window setTintColor: kAppColor];
-    //set color Tab bar
-    [[UITabBar appearance] setTintColor:kAppColor];
     
     return YES;
 }
@@ -55,14 +53,7 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     //Save data when the user quits
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError* error) {
-        if (contextDidSave) {
-            NSLog(@"Data in default context SAVED");
-        }
-        if (error) {
-            NSLog(@"Data in default context ERROR %@", error);
-        }
-    }];
+    
     
 }
 
@@ -82,36 +73,37 @@
 - (void)loadGenreIfNecessary;
 {
     
-    
-    
-    //Get data
-    if ([Genre MR_countOfEntities] == 0)
-    {
+    if ([Playlist MR_countOfEntities] == 0) {
+        //Creat history playlist
+        [Playlist createPlaylistWithTitle:@"History"];
         
         //Set Appcolor
         NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:kAppDefaultColor];
         [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"AppColor"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    //Get data
+    if ([Genre MR_countOfEntities] == 0)
+    {
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Genres" ofType:@"json"];
+        NSData *data = [NSData dataWithContentsOfFile:filePath];
         
-        //Creat history playlist
-        [Playlist createPlaylistWithTitle:@"History"];
+        NSError *error;
+        NSArray *genres = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         
-        //Get genres
-        [sSoundCloudAPI exploreGenresWithCompletionBlock:^(NSArray *genreDict) {
-            for (NSString *genreCode in genreDict) {
-                [Genre creatWithCode:genreCode];
+        for (NSDictionary *genre in genres) {
+            [Genre creatWithJsonDict:genre];
+        }
+        
+        //save data
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave,NSError* error) {
+            if (contextDidSave) {
+                NSLog(@"Data in default context SAVED");
             }
-            
-            
-            //save data
-            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError* error) {
-                if (contextDidSave) {
-                    NSLog(@"Data in default context SAVED");
-                }
-                if (error) {
-                    NSLog(@"Data in default context ERROR %@", error);
-                }
-            }];
+            if (error) {
+                NSLog(@"Data in default context ERROR %@", error);
+            }
         }];
     }
 }

@@ -227,7 +227,6 @@ typedef NS_ENUM(NSInteger, buttonType) {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     NowPlayingViewController *nowPlayingViewController = [NowPlayingViewController sharedManager];
-    Track *selectedTrack = [[Track alloc]initWithDBTrack:_historyTracks[indexPath.row]];
     nowPlayingViewController.trackList = [[NSMutableArray alloc]init];
     for (DBTrack *dbTrack in _historyTracks) {
         [nowPlayingViewController.trackList addObject:[[Track alloc]initWithDBTrack:dbTrack]];
@@ -239,10 +238,8 @@ typedef NS_ENUM(NSInteger, buttonType) {
     [self.navigationController.view.layer addAnimation:transition
                                                 forKey:kCATransition];
     [nowPlayingViewController setHidesBottomBarWhenPushed:YES];
-    if (![nowPlayingViewController.playingTrack.trackID isEqual: selectedTrack.trackID]) {
-        nowPlayingViewController.playingTrack = selectedTrack;
-        [nowPlayingViewController playTrack:nowPlayingViewController.playingTrack];
-    }
+    nowPlayingViewController.playingTrack = nowPlayingViewController.trackList[indexPath.row];
+    [nowPlayingViewController playTrack:nowPlayingViewController.playingTrack];
     [self.navigationController pushViewController:nowPlayingViewController animated:NO];
     
 }
@@ -322,9 +319,51 @@ typedef NS_ENUM(NSInteger, buttonType) {
             break;
         }
         case NSFetchedResultsChangeMove:{
+            [self reloadAllTracksWillReloadTableView:YES];
             break;
         }
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated;
+{
+    [super viewWillAppear:animated];
+    
+    if (_historyTracks.count == 0) {
+        self.navigationItem.rightBarButtonItem = nil;
+        _searchBar.hidden = YES;
+        if ([NowPlayingViewController sharedManager].playingTrack) {
+            
+            UIImage *btnPlayingImage = [UIImage customWithTintColor:kAppColor duration:1.5];
+            
+            UIBarButtonItem *barItemPlaying = [[UIBarButtonItem alloc]initWithImage:btnPlayingImage style:UIBarButtonItemStyleBordered target:self action:@selector(btnPlayingDidTouch)];
+            self.navigationItem.rightBarButtonItem = barItemPlaying;
+        } else {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+    } else {
+        _searchBar.hidden = NO;
+        
+        if ([NowPlayingViewController sharedManager].playingTrack) {
+            
+            
+            UIImage *btnPlayingImage = [UIImage customWithTintColor:kAppColor duration:1.5];
+            
+            UIBarButtonItem *barItemPlaying = [[UIBarButtonItem alloc]initWithImage:btnPlayingImage style:UIBarButtonItemStyleBordered target:self action:@selector(btnPlayingDidTouch)];
+            self.navigationItem.rightBarButtonItems = @[_barItem,barItemPlaying];
+        } else {
+            self.navigationItem.rightBarButtonItem = _barItem;
+            
+        }
+        
+    }
+}
+
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tblHistory reloadData];
 }
 
 

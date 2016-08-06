@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)creatWithCode:(NSString *)code;
 
++ (instancetype)creatWithJsonDict:(NSDictionary *)jsonDict;
+
 @end
 
 NS_ASSUME_NONNULL_END

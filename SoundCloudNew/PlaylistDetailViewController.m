@@ -128,6 +128,13 @@ typedef NS_ENUM(NSInteger, buttonType) {
     [self.navigationController pushViewController:nowPlayingViewController animated:NO];
 }
 
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tblPlaylistTracks reloadData];
+}
+
 #pragma mark - UISearchBar Delegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -213,7 +220,6 @@ typedef NS_ENUM(NSInteger, buttonType) {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     NowPlayingViewController *nowPlayingViewController = [NowPlayingViewController sharedManager];
-    Track *selectedTrack = [[Track alloc]initWithDBTrack:_tracks[indexPath.row]];
     nowPlayingViewController.trackList = [[NSMutableArray alloc]init];
     for (DBTrack *dbTrack in _tracks) {
         [nowPlayingViewController.trackList addObject:[[Track alloc]initWithDBTrack:dbTrack]];
@@ -225,10 +231,8 @@ typedef NS_ENUM(NSInteger, buttonType) {
     [self.navigationController.view.layer addAnimation:transition
                                                 forKey:kCATransition];
     [nowPlayingViewController setHidesBottomBarWhenPushed:YES];
-    if (![nowPlayingViewController.playingTrack.trackID isEqual: selectedTrack.trackID]) {
-        nowPlayingViewController.playingTrack = selectedTrack;
-        [nowPlayingViewController playTrack:nowPlayingViewController.playingTrack];
-    }
+    nowPlayingViewController.playingTrack = nowPlayingViewController.trackList[indexPath.row];
+    [nowPlayingViewController playTrack:nowPlayingViewController.playingTrack];
     [self.navigationController pushViewController:nowPlayingViewController animated:NO];
 }
 

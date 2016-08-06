@@ -42,6 +42,13 @@
     
 }
 
+- (void)updateColor;
+{
+    [super updateColor];
+    
+    [self.tblPlaylists reloadData];
+}
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [_searchBar endEditing:YES];
